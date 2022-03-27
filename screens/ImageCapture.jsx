@@ -1,15 +1,15 @@
-import React, { useEffect, useState } from "react";
-import { StyleSheet, Text, View, SafeAreaView } from 'react-native';
+import React, { useState, useEffect } from "react";
+import { StyleSheet, Text, View, TouchableOpacity, PermissionsAndroid } from 'react-native';
 import { Camera } from 'expo-camera';
 //import { ErrorAlert, ErrorText } from "./utils";
 //import { styles } from "./styles";
 
 import Navbar from "../components/NavBar/NavBar.jsx";
 import TopBar from "../components/TopBar/TopBar.jsx";
-import { TouchableOpacity } from "react-native-gesture-handler";
 
-const CameraScreen = ({ navigation }) => {
-    
+const CameraScreen = ({ navigation }) =>  {
+    <TopBar />
+
     const [hasPermission, setHasPermission] = useState(null);
     const[type, setType] = useState(Camera.Constants.Type.back);
 
@@ -22,14 +22,13 @@ const CameraScreen = ({ navigation }) => {
 
     if (hasPermission === null) {
         return <View />;
-        }
-        if(hasPermission === false) {
-            return <Text>No access to camera</Text>
-        }
-
+    }
+    if(hasPermission === false) {
+        return <Text>No access to camera</Text>;
+    }
     return(
-        <View style={{flex : 1}}>
-            <Camera style={{flex : 1}} type = {type}>
+        <View style={styles.container}>
+            <Camera style={styles.camera} type = {type}>
                 <View style={styles.buttonContainer}>
                     <TouchableOpacity
                         style={styles.button}
@@ -46,17 +45,32 @@ const CameraScreen = ({ navigation }) => {
             </Camera>
         </View>
     );
+    <Navbar handleNavigate={to => navigation.navigate(to)} />
 }
 
-export default CameraScreen
+export default CameraScreen;
 
 const styles = StyleSheet.create({
-    background: {
-        backgroundColor: "rgb(42, 42, 42)",
-        display: "flex",
-        height: "100%",
-        justifyContent: "space-between",
-        alignItems: "center",
+    container: {
+      flex: 1,
     },
+    camera: {
+      flex: 1,
+    },
+    buttonContainer: {
+      flex: 1,
+      backgroundColor: 'transparent',
+      flexDirection: 'row',
+      margin: 20,
+    },
+    button: {
+      flex: 0.1,
+      alignSelf: 'flex-end',
+      alignItems: 'center',
+    },
+    text: {
+      fontSize: 18,
+      color: 'black',
+    },
+  });
 
-});
